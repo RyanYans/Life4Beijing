@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="primary_color">#c33</color>
+    <color name="point_disable">#999</color>
+    <color name="point_enable">#933</color>
+    <color name="text_white">#ccf</color>
+    <color name="text_black">#233</color>
+    <color name="botton_white">#fff</color>
+    <color name="botton_text_color">#fff</color>
+    <color name="toolbar_color">#923</color>
+    <color name="botton_text_press_color">#c23</color>
+</resources>

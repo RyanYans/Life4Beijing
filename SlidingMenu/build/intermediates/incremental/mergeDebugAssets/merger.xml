@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="D:\AndroidProject\Android_Demo\Life4Beijing\SlidingMenu\assets"/><source path="D:\AndroidProject\Android_Demo\Life4Beijing\SlidingMenu\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\AndroidProject\Android_Demo\Life4Beijing\SlidingMenu\src\debug\assets"/></dataSet></merger>

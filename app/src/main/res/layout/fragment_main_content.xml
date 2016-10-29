@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              >
+
+    <com.rya.life4beijing.view.NoScrollViewPager
+        android:id="@+id/vp_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <RadioGroup
+        android:id="@+id/rg_botton"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/bottom_tab_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            android:drawableTop="@drawable/selector_tag_home"
+            android:checked="true"
+            android:text="首页"
+            style="@style/bottom_tags_style"/>
+
+        <RadioButton
+            android:id="@+id/rb_newscenter"
+            android:drawableTop="@drawable/selector_tag_newscenter"
+            android:text="新闻中心"
+            style="@style/bottom_tags_style"/>
+
+        <RadioButton
+            android:id="@+id/rb_smartserver"
+            android:drawableTop="@drawable/selector_tag_smartserver"
+            android:text="智慧服务"
+            style="@style/bottom_tags_style"/>
+
+        <RadioButton
+            android:id="@+id/rb_gov"
+            android:drawableTop="@drawable/selector_tag_gov"
+            android:text="政务"
+            style="@style/bottom_tags_style"/>
+
+        <RadioButton
+            android:id="@+id/rb_setting"
+            android:drawableTop="@drawable/selector_tag_setting"
+            android:text="设置"
+            style="@style/bottom_tags_style"/>
+    </RadioGroup>
+
+
+</LinearLayout>
