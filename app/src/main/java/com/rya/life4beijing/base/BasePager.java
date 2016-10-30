@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.rya.life4beijing.Activity.MainActicity;
 import com.rya.life4beijing.R;
 
 /**
@@ -20,6 +21,26 @@ public class BasePager {
     public TextView titleText;
     public final View mRootView;
 
+    public Activity getmActivity() {
+        return mActivity;
+    }
+
+    public ImageButton getImgBtnMenu() {
+        return imgBtnMenu;
+    }
+
+    public FrameLayout getPagerContent() {
+        return pagerContent;
+    }
+
+    public TextView getTitleText() {
+        return titleText;
+    }
+
+    public View getmRootView() {
+        return mRootView;
+    }
+
     public BasePager(Activity activity) {
         mActivity = activity;
 
@@ -32,6 +53,15 @@ public class BasePager {
         titleText = (TextView) view.findViewById(R.id.title_text);
         imgBtnMenu = (ImageButton) view.findViewById(R.id.imgBtn);
         pagerContent = (FrameLayout) view.findViewById(R.id.fl_pager_content);
+
+        imgBtnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //按钮打开关闭菜单
+                MainActicity mActivity = (MainActicity) BasePager.this.mActivity;
+                mActivity.getSlidingMenu().toggle();
+            }
+        });
 
         return view;
     }

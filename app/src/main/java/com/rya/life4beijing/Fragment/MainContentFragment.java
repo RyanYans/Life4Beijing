@@ -120,6 +120,10 @@ public class MainContentFragment extends BaseFragment {
         }
     }
 
+    public NewsPager getNewsPager() {
+        return (NewsPager) pagers.get(1);
+    }
+
 
     private class ContentAdapter extends PagerAdapter {
 
