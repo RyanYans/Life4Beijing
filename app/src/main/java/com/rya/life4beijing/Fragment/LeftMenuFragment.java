@@ -85,7 +85,6 @@ public class LeftMenuFragment extends BaseFragment {
 
         // 更新页面
         newsPager.setCurrentDetilPager(position);
-
     }
 
     private void toggleMenu() {
@@ -94,7 +93,6 @@ public class LeftMenuFragment extends BaseFragment {
         //关闭 -- 打开
         slidingMenu.toggle();
     }
-
 
     private class LeftMenuAdapter extends BaseAdapter {
 
