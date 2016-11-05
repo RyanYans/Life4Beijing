@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jaeger.library.StatusBarUtil;
+import com.rya.life4beijing.R;
+
 /**
  * Created by Rya32 on 广东石油化工学院.
  * Version 1.0
@@ -21,6 +24,8 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
+
+
     }
 
     @Nullable

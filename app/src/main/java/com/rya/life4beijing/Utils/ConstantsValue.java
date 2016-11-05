@@ -12,4 +12,5 @@ public class ConstantsValue {
 
     public static final String LEFT_MENU = "left_menu";
     public static final String MAIN_CONTENT = "left_content";
+    public static final String HAS_JSON_CACHE = "has_json_cache";
 }

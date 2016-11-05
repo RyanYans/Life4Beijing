@@ -3,6 +3,7 @@ package com.rya.life4beijing.Utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
@@ -27,6 +28,8 @@ public class HttpUtil {
             } else {
                 return null;
             }
+        } catch (SocketTimeoutException sktExp) {
+
         } catch (IOException e) {
             e.printStackTrace();
         }

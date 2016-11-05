@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.rya.life4beijing.Activity.MainActicity;
 import com.rya.life4beijing.R;
@@ -35,6 +36,8 @@ public class LeftMenuFragment extends BaseFragment {
         View view = View.inflate(getActivity(), R.layout.fragment_left_menu, null);
 
         lv_menu = (ListView) view.findViewById(R.id.lv_menu);
+
+        StatusBarUtil.setColor(mActivity, getResources().getColor(R.color.black), 25);
 
         return view;
     }

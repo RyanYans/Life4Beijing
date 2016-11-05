@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
+import com.jaeger.library.StatusBarUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.rya.life4beijing.Activity.MainActicity;
 import com.rya.life4beijing.R;
@@ -36,6 +37,8 @@ public class MainContentFragment extends BaseFragment {
 
         vp_content = (NoScrollViewPager) view.findViewById(R.id.vp_content);
         rg_botton = (RadioGroup) view.findViewById(R.id.rg_botton);
+
+        StatusBarUtil.setColor(mActivity, getResources().getColor(R.color.colorAppStyle), 25);
 
 
         return view;

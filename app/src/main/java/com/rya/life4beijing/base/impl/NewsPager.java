@@ -12,6 +12,8 @@ import com.rya.life4beijing.Activity.MainActicity;
 import com.rya.life4beijing.Fragment.LeftMenuFragment;
 import com.rya.life4beijing.Utils.ConstantsValue;
 import com.rya.life4beijing.Utils.HttpUtil;
+import com.rya.life4beijing.Utils.PrefUtil;
+import com.rya.life4beijing.Utils.StreamUtil;
 import com.rya.life4beijing.base.BaseMenuDetilPager;
 import com.rya.life4beijing.base.BasePager;
 import com.rya.life4beijing.base.impl.MenuDetilPagerImpl.FocusDetilPager;
@@ -20,8 +22,10 @@ import com.rya.life4beijing.base.impl.MenuDetilPagerImpl.NewsDetilPager;
 import com.rya.life4beijing.base.impl.MenuDetilPagerImpl.PhotoDetilPager;
 import com.rya.life4beijing.bean.NewsData;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -31,21 +35,19 @@ import java.util.ArrayList;
 
 public class NewsPager extends BasePager {
 
-
     private static final int UPDATE_NEWSDATA = 200;
     private ArrayList<BaseMenuDetilPager> mDetilPagers;
-    private NewsData mNewsData;
-
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPDATE_NEWSDATA:
-                    mNewsData = (NewsData) msg.obj;
                     updatePager();
             }
         }
     };
+
+    private NewsData mNewsData;
 
     public NewsPager(Activity activity) {
         super(activity);
@@ -113,23 +115,27 @@ public class NewsPager extends BasePager {
 
     private void getJsonData() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // 解析 服务器返回Json
-                InputStream json = HttpUtil.getData(ConstantsValue.NEWSPAGER_URI);
+        //查看是否有缓存, 有缓存先立刻显示
 
-                InputStreamReader jsonReader = new InputStreamReader(json);
+        if (PrefUtil.getBoolean(mActivity, ConstantsValue.HAS_JSON_CACHE, false)) {
+            File file = new File(mActivity.getCacheDir().getPath(), "data.json");
+            //有缓存 直接读取
+            if (file.exists()) {
+                try {
+                    FileInputStream fileInputStream = new FileInputStream(file);
+                    String jsonStr = StreamUtil.streamToString(fileInputStream);
 
-                Gson gson = new Gson();
-                NewsData newsData = gson.fromJson(jsonReader, NewsData.class);
+                    mNewsData = new Gson().fromJson(jsonStr, NewsData.class);
 
-                Message msg = Message.obtain();
-                msg.obj = newsData;
-                msg.what = UPDATE_NEWSDATA;
-                mHandler.sendMessage(msg);
+                    sendHandlerMessage(UPDATE_NEWSDATA);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }).start();
+        }
+        // 获取服务器信息
+        getDataFromNet();
 
         //去本地数据
         /*try {
@@ -146,8 +152,44 @@ public class NewsPager extends BasePager {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+    }
 
-        // 否者异常返回Null
+    // 从远程服务器获取数据
+    private void getDataFromNet() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 解析 服务器返回Json
+                InputStream json = HttpUtil.getData(ConstantsValue.NEWSPAGER_URI);
 
+                if (json != null) {
+                    try {
+                        String jsonStr = StreamUtil.streamToString(json);
+
+                        Gson gson = new Gson();
+                        NewsData newsData = gson.fromJson(jsonStr, NewsData.class);
+                        mNewsData = newsData;
+
+                        sendHandlerMessage(UPDATE_NEWSDATA);
+
+                        // 更新 缓存配置信息
+                        PrefUtil.setBoolean(mActivity, ConstantsValue.HAS_JSON_CACHE, true);
+                        // 缓存文件
+                        StreamUtil.writeFileToCache(mActivity, jsonStr, "data.json");
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+        }).start();
+    }
+
+    private void sendHandlerMessage(int updateMode) {
+        Message msg = Message.obtain();
+        msg.what = updateMode;
+        mHandler.sendMessage(msg);
     }
 }
