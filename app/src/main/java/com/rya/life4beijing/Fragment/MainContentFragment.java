@@ -15,6 +15,7 @@ import com.rya.life4beijing.base.impl.HomePager;
 import com.rya.life4beijing.base.impl.NewsPager;
 import com.rya.life4beijing.base.impl.SettingPager;
 import com.rya.life4beijing.base.impl.SmartServerPager;
+import com.rya.life4beijing.view.NoScrollViewPager;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 public class MainContentFragment extends BaseFragment {
 
-    private ViewPager vp_content;
+    private NoScrollViewPager vp_content;
     private ArrayList<BasePager> pagers;
     private RadioGroup rg_botton;
 
@@ -33,7 +34,7 @@ public class MainContentFragment extends BaseFragment {
     public View initView() {
         View view = View.inflate(mActivity, R.layout.fragment_main_content, null);
 
-        vp_content = (ViewPager) view.findViewById(R.id.vp_content);
+        vp_content = (NoScrollViewPager) view.findViewById(R.id.vp_content);
         rg_botton = (RadioGroup) view.findViewById(R.id.rg_botton);
 
 
