@@ -41,6 +41,8 @@ public class StreamUtil {
 
         fileOutputStream.write(bytes);
 
+        System.out.println("数据 >>>>>>>>>> 写入成功！~");
+
         fileOutputStream.close();
     }
 }

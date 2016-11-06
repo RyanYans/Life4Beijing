@@ -57,6 +57,7 @@ public class NewsPager extends BasePager {
     public void initData() {
         super.initData();
 
+        titleText.setText("新闻");
         // 菜单可见
         imgBtnMenu.setVisibility(View.VISIBLE);
 

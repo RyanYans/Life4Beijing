@@ -15,6 +15,7 @@ import com.rya.life4beijing.Utils.DisplayUtil;
 import com.rya.life4beijing.base.BaseMenuDetilPager;
 import com.rya.life4beijing.base.impl.TabDetilPagerImpl.NewsTabDetilPager;
 import com.rya.life4beijing.bean.NewsData;
+import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.ScrollIndicatorView;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
@@ -33,7 +34,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
     private List<NewsData.DataBean.ChildrenBean> mNewsData;
     private ViewPager newsDetailViewPager;
     private List<NewsTabDetilPager> mNewsTabDetilList;
-    private ScrollIndicatorView newsTabIndicator;
+    private Indicator newsTabIndicator;
 
     public NewsDetilPager(Activity activity, List<NewsData.DataBean.ChildrenBean> children) {
         super(activity);
@@ -48,7 +49,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
     public View initView() {
         View view = View.inflate(getmActivity(), R.layout.layout_newsdetil, null);
         newsDetailViewPager = (ViewPager) view.findViewById(R.id.vp_newsdetil);
-        newsTabIndicator = (ScrollIndicatorView) view.findViewById(R.id.newstab_indicator);
+        newsTabIndicator =  (Indicator) view.findViewById(R.id.newstab_indicator);
 
         return view;
     }
@@ -60,6 +61,8 @@ public class NewsDetilPager extends BaseMenuDetilPager {
     public void initData() {
         super.initData();
 
+        newsTabIndicator.setCurrentItem(0);
+
         mNewsTabDetilList = new ArrayList<>();
         for (int index = 0; index < mNewsData.size(); index++) {
             NewsTabDetilPager newsTabDetilPager = new NewsTabDetilPager(getmActivity(), mNewsData.get(index));
@@ -68,7 +71,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
 
         newsDetailViewPager.setAdapter(new NewsDetilAdapter());
 
-        // 初始化 IndicatorViewPager
+        // 初始化 IndicatorViewPager 顶部指示器
         initIndicatorViewPager();
     }
 

@@ -1,5 +1,6 @@
 package com.rya.life4beijing.Fragment;
 
+import android.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -30,6 +31,11 @@ public class MainContentFragment extends BaseFragment {
     private NoScrollViewPager vp_content;
     private ArrayList<BasePager> pagers;
     private RadioGroup rg_botton;
+
+    @Override
+    public void setInitialSavedState(SavedState state) {
+        super.setInitialSavedState(state);
+    }
 
     @Override
     public View initView() {
