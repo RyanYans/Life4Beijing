@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.rya.life4beijing.Activity.MainActicity;
+import com.rya.life4beijing.activity.MainActicity;
 import com.rya.life4beijing.Fragment.LeftMenuFragment;
 import com.rya.life4beijing.Utils.ConstantsValue;
 import com.rya.life4beijing.Utils.HttpUtil;

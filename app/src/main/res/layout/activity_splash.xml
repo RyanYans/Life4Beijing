@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_bg_newyear"
-    tools:context="com.rya.life4beijing.Activity.SplashActivity"
+    tools:context="com.rya.life4beijing.activity.SplashActivity"
     android:orientation="vertical">
 
     <!--沉浸框-->

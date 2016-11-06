@@ -4,6 +4,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <com.shizhefei.view.indicator.ScrollIndicatorView
+        android:id="@+id/newstab_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_newsdetil"
         android:layout_width="match_parent"

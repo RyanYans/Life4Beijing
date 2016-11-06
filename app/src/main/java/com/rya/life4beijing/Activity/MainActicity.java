@@ -1,19 +1,16 @@
-package com.rya.life4beijing.Activity;
+package com.rya.life4beijing.activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.jaeger.library.StatusBarUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.rya.life4beijing.Fragment.LeftMenuFragment;
 import com.rya.life4beijing.Fragment.MainContentFragment;
 import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.ConstantsValue;
-import com.rya.life4beijing.base.BasePager;
-import com.rya.life4beijing.base.impl.NewsPager;
 
 /**
  * Created by Rya32 on 广东石油化工学院.

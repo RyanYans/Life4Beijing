@@ -8,7 +8,7 @@ import android.widget.RadioGroup;
 
 import com.jaeger.library.StatusBarUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.rya.life4beijing.Activity.MainActicity;
+import com.rya.life4beijing.activity.MainActicity;
 import com.rya.life4beijing.R;
 import com.rya.life4beijing.base.BasePager;
 import com.rya.life4beijing.base.impl.GovAffarisPager;
@@ -39,7 +39,6 @@ public class MainContentFragment extends BaseFragment {
         rg_botton = (RadioGroup) view.findViewById(R.id.rg_botton);
 
         StatusBarUtil.setColor(mActivity, getResources().getColor(R.color.colorAppStyle), 25);
-
 
         return view;
     }

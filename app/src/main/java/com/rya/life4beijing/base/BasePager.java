@@ -6,7 +6,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.rya.life4beijing.Activity.MainActicity;
+import com.rya.life4beijing.activity.MainActicity;
 import com.rya.life4beijing.R;
 
 /**

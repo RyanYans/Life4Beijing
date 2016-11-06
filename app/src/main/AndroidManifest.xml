@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.SplashActivity"
+        <activity android:name=".activity.SplashActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             >
             <intent-filter>
@@ -20,8 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActicity"/>
-        <activity android:name=".Activity.UserGuideActivity"/>
+        <activity android:name=".activity.MainActicity"/>
+        <activity android:name=".activity.UserGuideActivity"/>
     </application>
 
 </manifest>

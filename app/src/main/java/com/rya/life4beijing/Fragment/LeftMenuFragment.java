@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.rya.life4beijing.Activity.MainActicity;
+import com.rya.life4beijing.activity.MainActicity;
 import com.rya.life4beijing.R;
-import com.rya.life4beijing.base.BasePager;
 import com.rya.life4beijing.base.impl.NewsPager;
 import com.rya.life4beijing.bean.NewsData;
 

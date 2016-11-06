@@ -1,4 +1,4 @@
-package com.rya.life4beijing.Activity;
+package com.rya.life4beijing.activity;
 
 import android.app.Activity;
 import android.content.Intent;
