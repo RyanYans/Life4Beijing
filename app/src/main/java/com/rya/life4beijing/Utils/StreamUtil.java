@@ -34,7 +34,7 @@ public class StreamUtil {
     }
 
     public static void writeFileToCache(Activity mActivity, String data, String fileName) throws IOException {
-        File file = new File(mActivity.getCacheDir().getPath() , fileName);
+        File file = new File(mActivity.getFilesDir().getPath() , fileName);
         FileOutputStream fileOutputStream = new FileOutputStream(file);
 
         byte[] bytes = data.getBytes();

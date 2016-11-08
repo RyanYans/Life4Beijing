@@ -119,7 +119,7 @@ public class NewsPager extends BasePager {
         //查看是否有缓存, 有缓存先立刻显示
 
         if (PrefUtil.getBoolean(mActivity, ConstantsValue.HAS_JSON_CACHE, false)) {
-            File file = new File(mActivity.getCacheDir().getPath(), "data.json");
+            File file = new File(mActivity.getFilesDir().getPath(), "data.json");
             //有缓存 直接读取
             if (file.exists()) {
                 try {
