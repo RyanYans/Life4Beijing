@@ -167,7 +167,8 @@ public class NewsDetilPager extends BaseMenuDetilPager {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             NewsTabDetilPager newsTabDetilPager =  mNewsTabDetilList.get(position);
-            newsTabDetilPager.initData();
+            // 初始化页面详情布局数据 -- 可在构造函数中完成
+            // newsTabDetilPager.initData();
             View view = newsTabDetilPager.getmRootView();
 
             container.addView(view);

@@ -18,13 +18,12 @@ import com.rya.life4beijing.bean.NewsData;
 
 public class NewsTabDetilPager extends BaseTabDetilPager {
 
-    private final NewsData.DataBean.ChildrenBean mNewsDetilData;
     private TextView mTextView;
 
     public NewsTabDetilPager(Activity activity, NewsData.DataBean.ChildrenBean childrenBean) {
-        super(activity);
+        super(activity, childrenBean);
 
-        mNewsDetilData = childrenBean;
+        // mNewsDetilData = childrenBean;
     }
 
     /**
@@ -40,12 +39,14 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
         mTextView.setTextSize(24);
         mTextView.setGravity(Gravity.CENTER);
 
+        mTextView.setText(getmChildrenBean().getTitle());
+
         return mTextView;
     }
 
     @Override
     public void initData() {
         super.initData();
-        mTextView.setText(mNewsDetilData.getTitle());
+        // mTextView.setText(mNewsDetilData.getTitle());
     }
 }
