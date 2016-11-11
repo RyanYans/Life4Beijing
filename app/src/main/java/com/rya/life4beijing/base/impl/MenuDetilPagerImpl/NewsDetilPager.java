@@ -64,12 +64,13 @@ public class NewsDetilPager extends BaseMenuDetilPager {
         newsTabIndicator.setCurrentItem(0);
 
         mNewsTabDetilList = new ArrayList<>();
+
         for (int index = 0; index < mNewsData.size(); index++) {
             NewsTabDetilPager newsTabDetilPager = new NewsTabDetilPager(getmActivity(), mNewsData.get(index));
             mNewsTabDetilList.add(newsTabDetilPager);
         }
 
-        newsDetailViewPager.setAdapter(new NewsDetilAdapter());
+        // newsDetailViewPager.setAdapter(new NewsDetilAdapter());
 
         // 初始化 IndicatorViewPager 顶部指示器
         initIndicatorViewPager();
@@ -90,7 +91,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
         //结合 viewPager和indicator
         IndicatorViewPager indicatorViewPager = new IndicatorViewPager(newsTabIndicator, newsDetailViewPager);
 
-        // 设置indicatorViewPager的适配器
+        // 设置indicatorViewPager的适配器( 相当于viewPager -- newsDetailViewPager.setAdapter(new NewsDetilAdapter()); )
         indicatorViewPager.setAdapter(new TopTabIndicatorAdapter());
     }
 
@@ -168,7 +169,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
         public Object instantiateItem(ViewGroup container, int position) {
             NewsTabDetilPager newsTabDetilPager =  mNewsTabDetilList.get(position);
             // 初始化页面详情布局数据 -- 可在构造函数中完成
-            // newsTabDetilPager.initData();
+            newsTabDetilPager.initData();
             View view = newsTabDetilPager.getmRootView();
 
             container.addView(view);

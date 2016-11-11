@@ -18,8 +18,18 @@ public abstract class BaseTabDetilPager {
 
     private NewsData.DataBean.ChildrenBean mChildrenBean;
 
+    private String mTabdUrl;
+
     // 页面根部局
     private View mRootView;
+
+    public String getmTabdUrl() {
+        return mTabdUrl;
+    }
+
+    public void setmTabdUrl(String mTabdUrl) {
+        this.mTabdUrl = mTabdUrl;
+    }
 
     public NewsData.DataBean.ChildrenBean getmChildrenBean() {
         return mChildrenBean;
