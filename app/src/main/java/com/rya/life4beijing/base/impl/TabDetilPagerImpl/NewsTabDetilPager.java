@@ -71,7 +71,6 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("url ........." + getmTabdUrl());
 
                 InputStream iStream = HttpUtil.getData(getmTabdUrl());
 //                InputStreamReader iReader = new InputStreamReader(iStream);
@@ -82,15 +81,12 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
                         Gson gson = new Gson();
                         NewsTabBean tabData = gson.fromJson(tabDataStr, NewsTabBean.class);
 
-                        System.out.println(TAG + " >>>>>>> " + tabData.getData().getTitle());
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
                     Log.w(TAG, "run: Http Getting Error");
                 }
-
             }
         }).start();
 

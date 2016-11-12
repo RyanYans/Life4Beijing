@@ -70,9 +70,10 @@ public class NewsDetilPager extends BaseMenuDetilPager {
             mNewsTabDetilList.add(newsTabDetilPager);
         }
 
+        // 不用单独对viewpager设置setAdapter适配器，在下方initIndicatorViewPager中已经封装好
         // newsDetailViewPager.setAdapter(new NewsDetilAdapter());
 
-        // 初始化 IndicatorViewPager 顶部指示器
+        // 初始化 IndicatorViewPager 顶部指示器 + 下方显示页面
         initIndicatorViewPager();
     }
 
@@ -91,7 +92,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
         //结合 viewPager和indicator
         IndicatorViewPager indicatorViewPager = new IndicatorViewPager(newsTabIndicator, newsDetailViewPager);
 
-        // 设置indicatorViewPager的适配器( 相当于viewPager -- newsDetailViewPager.setAdapter(new NewsDetilAdapter()); )
+        // 设置indicatorViewPager的适配器( 包括设置viewPager适配器 -- newsDetailViewPager.setAdapter(new NewsDetilAdapter()); )
         indicatorViewPager.setAdapter(new TopTabIndicatorAdapter());
     }
 
