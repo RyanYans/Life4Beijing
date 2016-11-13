@@ -1,36 +1,53 @@
 package com.rya.life4beijing.base.impl.TabDetilPagerImpl;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.nfc.Tag;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.ConstantsValue;
 import com.rya.life4beijing.Utils.HttpUtil;
+import com.rya.life4beijing.Utils.PrefUtil;
 import com.rya.life4beijing.Utils.StreamUtil;
 import com.rya.life4beijing.base.BaseTabDetilPager;
 import com.rya.life4beijing.bean.NewsData;
 import com.rya.life4beijing.bean.NewsTabBean;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 页面详情
- *
+ * <p>
  * Created by Rya32 on 广东石油化工学院.
  * Version 1.0
  */
 
 public class NewsTabDetilPager extends BaseTabDetilPager {
 
+    @BindView(R.id.vp_detail)
+    ViewPager vpDetail;
+
     private TextView mTextView;
     private static final String TAG = "NewsTabDetilPager";
+
+    private NewsTabBean mTabData;
+    private List<NewsTabBean.DataBean.TopnewsBean> mTopNews;
+    private TopNewsDetailAdapter mNewsDetailAdapter;
 
     public NewsTabDetilPager(Activity activity, NewsData.DataBean.ChildrenBean childrenBean) {
         super(activity, childrenBean);
@@ -43,28 +60,56 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
 
     /**
      * 初始化 新闻详情布局
+     *
      * @return 返回新闻详情页面的布局View 用于viewPager接收
      */
     @Override
     public View initView() {
 
-        mTextView = new TextView(getmActivity());
-
+        /*mTextView = new TextView(getmActivity());
         mTextView.setTextColor(Color.RED);
         mTextView.setTextSize(24);
         mTextView.setGravity(Gravity.CENTER);
+        mTextView.setText(getmChildrenBean().getTitle());*/
 
-        mTextView.setText(getmChildrenBean().getTitle());
+        View view = View.inflate(getmActivity(), R.layout.pager_tab_detail, null);
 
-        return mTextView;
+        ButterKnife.bind(this, view);
+
+//        vp_detail = (ViewPager)view.findViewById(R.id.vp_detail);
+
+        return view;
     }
 
     @Override
     public void initData() {
-        super.initData();
+//        super.initData();
         // mTextView.setText(mNewsDetilData.getTitle());
 
-        getDataFromServer();
+        //查看是否有json文件缓存
+        String cacheFileStr = getCacheFile(getmChildrenBean().getTitle());
+        if (cacheFileStr != null) {
+            getDataFromJson(cacheFileStr);
+        }
+
+        //从服务器获取新数据
+         getDataFromServer();
+    }
+
+    private String getCacheFile(String title) {
+        File file = new File(getmActivity().getFilesDir().getPath(), title);
+        if (file.exists()) {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                String tabDataStr = StreamUtil.streamToString(fileInputStream);
+
+                return tabDataStr;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     private void getDataFromServer() {
@@ -78,8 +123,10 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
                     try {
                         String tabDataStr = StreamUtil.streamToString(iStream);
 
-                        Gson gson = new Gson();
-                        NewsTabBean tabData = gson.fromJson(tabDataStr, NewsTabBean.class);
+                        getDataFromJson(tabDataStr);
+
+                        StreamUtil.writeFileToCache(getmActivity(), tabDataStr, getmChildrenBean().getTitle());
+                        // PrefUtil.setString(getmActivity(), ConstantsValue.TABNEWS_JSON, tabDataStr);
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -89,7 +136,55 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
                 }
             }
         }).start();
+    }
 
+    private void getDataFromJson(String tabDataStr) {
 
+        Gson gson = new Gson();
+        mTabData = gson.fromJson(tabDataStr, NewsTabBean.class);
+
+        mTopNews = mTabData.getData().getTopnews();
+
+        if (vpDetail != null) {
+            getmActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mNewsDetailAdapter = new TopNewsDetailAdapter();
+                    vpDetail.setAdapter(mNewsDetailAdapter);
+                }
+            });
+        }
+    }
+
+    private class TopNewsDetailAdapter extends PagerAdapter {
+        @Override
+        public int getCount() {
+            return mTopNews.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+
+            ImageView imageView = new ImageView(getmActivity());
+            String topImageUrl = mTopNews.get(position).getTopimage();
+            Picasso
+                    .with(getmActivity())
+                    .load(topImageUrl)
+                    .into(imageView);
+
+            container.addView(imageView);
+
+            return imageView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
     }
 }

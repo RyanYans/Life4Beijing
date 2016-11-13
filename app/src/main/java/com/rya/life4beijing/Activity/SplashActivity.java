@@ -16,9 +16,14 @@ import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.ConstantsValue;
 import com.rya.life4beijing.Utils.PrefUtil;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SplashActivity extends Activity {
 
-    private LinearLayout root_splash;
+    // Butter Knife 注解依赖
+    @BindView(R.id.root_splash)
+    LinearLayout root_splash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,8 @@ public class SplashActivity extends Activity {
     }
 
     private void initUI() {
-        root_splash = (LinearLayout) findViewById(R.id.root_splash);
+        ButterKnife.bind(SplashActivity.this);
+
     }
 
     private void initAnim() {

@@ -21,9 +21,11 @@ import com.shizhefei.view.indicator.ScrollIndicatorView;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
-
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Rya32 on 广东石油化工学院.
@@ -31,10 +33,15 @@ import java.util.List;
  */
 
 public class NewsDetilPager extends BaseMenuDetilPager {
+
+    @BindView(R.id.newstab_indicator)
+    Indicator newstabIndicator;
+    @BindView(R.id.vp_newsdetail)
+    ViewPager vpNewsdetail;
     private List<NewsData.DataBean.ChildrenBean> mNewsData;
-    private ViewPager newsDetailViewPager;
+//    private ViewPager newsDetailViewPager;
     private List<NewsTabDetilPager> mNewsTabDetilList;
-    private Indicator newsTabIndicator;
+//    private Indicator newsTabIndicator;
 
     public NewsDetilPager(Activity activity, List<NewsData.DataBean.ChildrenBean> children) {
         super(activity);
@@ -43,13 +50,17 @@ public class NewsDetilPager extends BaseMenuDetilPager {
 
     /**
      * 初始化页面布局并返回布局对象
+     *
      * @return
      */
     @Override
     public View initView() {
         View view = View.inflate(getmActivity(), R.layout.layout_newsdetil, null);
-        newsDetailViewPager = (ViewPager) view.findViewById(R.id.vp_newsdetil);
-        newsTabIndicator =  (Indicator) view.findViewById(R.id.newstab_indicator);
+
+        ButterKnife.bind(this, view);
+
+//        newsDetailViewPager = (ViewPager) view.findViewById(R.id.vp_newsdetail);
+//        newsTabIndicator = (Indicator) view.findViewById(R.id.newstab_indicator);
 
         return view;
     }
@@ -61,7 +72,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
     public void initData() {
         super.initData();
 
-        newsTabIndicator.setCurrentItem(0);
+        newstabIndicator.setCurrentItem(0);
 
         mNewsTabDetilList = new ArrayList<>();
 
@@ -82,15 +93,15 @@ public class NewsDetilPager extends BaseMenuDetilPager {
      */
     private void initIndicatorViewPager() {
         // 设置指示器底部样式
-        newsTabIndicator.setScrollBar(new ColorBar(getmActivity(), getmActivity().getResources().getColor(R.color.colorAppStyle), 5));
+        newstabIndicator.setScrollBar(new ColorBar(getmActivity(), getmActivity().getResources().getColor(R.color.colorAppStyle), 5));
 
         float unSelectSize = 16;
         float selectSize = unSelectSize * 1.3f;
-        newsTabIndicator.setOnTransitionListener(new OnTransitionTextListener().setColor(getmActivity().getResources().getColor(R.color.colorAppStyle)
+        newstabIndicator.setOnTransitionListener(new OnTransitionTextListener().setColor(getmActivity().getResources().getColor(R.color.colorAppStyle)
                 , Color.GRAY).setSize(selectSize, unSelectSize));
 
         //结合 viewPager和indicator
-        IndicatorViewPager indicatorViewPager = new IndicatorViewPager(newsTabIndicator, newsDetailViewPager);
+        IndicatorViewPager indicatorViewPager = new IndicatorViewPager(newstabIndicator, vpNewsdetail);
 
         // 设置indicatorViewPager的适配器( 包括设置viewPager适配器 -- newsDetailViewPager.setAdapter(new NewsDetilAdapter()); )
         indicatorViewPager.setAdapter(new TopTabIndicatorAdapter());
@@ -153,8 +164,8 @@ public class NewsDetilPager extends BaseMenuDetilPager {
     }
 
     /**
-    * 页面ViewPager适配器
-    * */
+     * 页面ViewPager适配器
+     */
     private class NewsDetilAdapter extends PagerAdapter {
         @Override
         public int getCount() {
@@ -168,7 +179,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            NewsTabDetilPager newsTabDetilPager =  mNewsTabDetilList.get(position);
+            NewsTabDetilPager newsTabDetilPager = mNewsTabDetilList.get(position);
             // 初始化页面详情布局数据 -- 可在构造函数中完成
             newsTabDetilPager.initData();
             View view = newsTabDetilPager.getmRootView();

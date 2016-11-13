@@ -25,7 +25,6 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();
 
-
     }
 
     @Nullable
