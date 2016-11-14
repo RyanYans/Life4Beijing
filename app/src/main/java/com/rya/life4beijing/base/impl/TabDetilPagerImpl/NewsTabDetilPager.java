@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -41,8 +42,13 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
 
     @BindView(R.id.vp_detail)
     ViewPager vpDetail;
+    @BindView(R.id.tv_topnews_title)
+    TextView topNewsTitle;
+    @BindView(R.id.ll_topnews_point)
+    LinearLayout topNewsPoint;
 
     private TextView mTextView;
+
     private static final String TAG = "NewsTabDetilPager";
 
     private NewsTabBean mTabData;
@@ -66,26 +72,40 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
     @Override
     public View initView() {
 
-        /*mTextView = new TextView(getmActivity());
-        mTextView.setTextColor(Color.RED);
-        mTextView.setTextSize(24);
-        mTextView.setGravity(Gravity.CENTER);
-        mTextView.setText(getmChildrenBean().getTitle());*/
-
         View view = View.inflate(getmActivity(), R.layout.pager_tab_detail, null);
 
         ButterKnife.bind(this, view);
 
 //        vp_detail = (ViewPager)view.findViewById(R.id.vp_detail);
 
+        //initPointView();
+
         return view;
+    }
+
+    private void initPointView() {
+        topNewsPoint.removeAllViews();
+        for (int index = 0; index < mTopNews.size(); index++) {
+            //初始化小圆点
+            View pointView = new View(getmActivity());
+            pointView.setBackgroundResource(R.drawable.selector_point);
+            LinearLayout.LayoutParams pointLayoutParams = new LinearLayout.LayoutParams(20, 20);
+            if (index == 0) {
+                pointView.setEnabled(true);
+            }else {
+                pointLayoutParams.leftMargin = 10;
+                pointView.setEnabled(false);
+            }
+            pointView.setLayoutParams(pointLayoutParams);
+
+            topNewsPoint.addView(pointView);
+        }
+
     }
 
     @Override
     public void initData() {
-//        super.initData();
-        // mTextView.setText(mNewsDetilData.getTitle());
-
+        super.initData();
         //查看是否有json文件缓存
         String cacheFileStr = getCacheFile(getmChildrenBean().getTitle());
         if (cacheFileStr != null) {
@@ -151,12 +171,45 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
                 public void run() {
                     mNewsDetailAdapter = new TopNewsDetailAdapter();
                     vpDetail.setAdapter(mNewsDetailAdapter);
+
+                    // 首次进入ViewPager, 手动设置标题
+                    topNewsTitle.setText(mTopNews.get(0).getTitle());
+
+                    //初始化 小圆点
+                    initPointView();
+
+                    vpDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                        @Override
+                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                        }
+
+                        @Override
+                        public void onPageSelected(int position) {
+                            topNewsTitle.setText(mTopNews.get(position).getTitle());
+
+                            for (int index = 0; index < mTopNews.size(); index++) {
+                                View pointView = topNewsPoint.getChildAt(index);
+                                pointView.setEnabled(index == position);
+                            }
+                        }
+
+                        @Override
+                        public void onPageScrollStateChanged(int state) {
+
+                        }
+                    });
                 }
             });
         }
     }
 
     private class TopNewsDetailAdapter extends PagerAdapter {
+
+        public TopNewsDetailAdapter() {
+
+        }
+
         @Override
         public int getCount() {
             return mTopNews.size();
