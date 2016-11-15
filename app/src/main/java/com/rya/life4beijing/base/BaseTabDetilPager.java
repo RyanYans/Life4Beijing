@@ -12,8 +12,6 @@ import com.rya.life4beijing.bean.NewsData;
 
 public abstract class BaseTabDetilPager {
 
-
-
     private final Activity mActivity;
 
     private NewsData.DataBean.ChildrenBean mChildrenBean;

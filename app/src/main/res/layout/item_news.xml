@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+    android:padding="7dp"
+    >
+
+    <ImageView
+        android:id="@+id/iv_news_img"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/image_demo"
+        android:background="@color/colorGray"
+        android:layout_marginRight="10dp"
+        android:padding="1dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_news_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_black"
+            android:textSize="14sp"
+            android:maxLines="2"
+            android:text="了卡卡是的距离喀什的结果卢卡斯的个链接的价格i哦日凯萨琳开始倒计时的国家设立高级闪电拉萨大家哦未提交哦就adsl看感觉啊连接是否"
+            />
+
+        <TextView
+            android:id="@+id/tv_news_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorGray"
+            android:text="2016 -11 -11 10:12"
+            android:gravity="bottom"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

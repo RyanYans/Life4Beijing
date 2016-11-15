@@ -141,6 +141,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
             pager.initData();
 
             return pager.getmRootView();
+
         }
 
         @Override

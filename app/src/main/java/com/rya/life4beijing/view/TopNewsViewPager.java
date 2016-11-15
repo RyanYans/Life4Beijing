@@ -43,8 +43,6 @@ public class TopNewsViewPager extends ViewPager {
                 float dx = moveX - startX;
                 float dy = moveY - startY;
 
-                System.out.println(dx + " >>>>>> " + dy);
-
                 // 左右滑动
                 if (Math.abs(dx) > Math.abs(dy)) {
                     if (dx > 0) {

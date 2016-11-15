@@ -13,4 +13,5 @@
     <color name="toolbar_color">#923</color>
     <color name="botton_text_press_color">#c23</color>
     <color name="black">#000</color>
+    <color name="colorGray">#777</color>
 </resources>
