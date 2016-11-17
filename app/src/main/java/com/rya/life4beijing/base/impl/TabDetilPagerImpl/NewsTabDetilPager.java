@@ -90,6 +90,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
         ButterKnife.bind(this, listViewHeader);
 
         View view = View.inflate(getmActivity(), R.layout.pager_tab_detail, null);
+        View dragView = View.inflate(getmActivity(), R.layout.header_dragview, null);
 
         newsListView = (ListView) view.findViewById(R.id.lv_news);
 
