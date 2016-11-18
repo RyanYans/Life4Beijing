@@ -13,6 +13,12 @@ import java.net.URL;
 
 public class HttpUtil {
 
+    public static InputStream getDataFromOkHttp() {
+
+
+        return null;
+    }
+
     public static InputStream getData(String uri) {
         try {
             URL url = new URL(uri);

@@ -13,6 +13,11 @@ import android.widget.TextView;
 
 import com.rya.life4beijing.R;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Formatter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -63,7 +68,7 @@ public class DragRefreshHeaderView extends ListView {
     private void initAnimation() {
         mPullDownRotateAnimation = new RotateAnimation(-180, 0, Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
-        mPullDownRotateAnimation.setDuration(300);
+        mPullDownRotateAnimation.setDuration(200);
         mPullDownRotateAnimation.setFillAfter(true);
 
         mReleaseUpRotateAnimation = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f,
@@ -145,6 +150,13 @@ public class DragRefreshHeaderView extends ListView {
         return super.onTouchEvent(ev);
     }
 
+    public void setCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String data = dateFormat.format(new Date());
+
+        tvHeaderTime.setText(data);
+    }
+
     private void stateChange(int state) {
         switch (state) {
             case STATE_PULL_DOWN_REFRESH:
@@ -175,12 +187,16 @@ public class DragRefreshHeaderView extends ListView {
         }
     }
 
-    public void RefreshComplete() {
+    public void RefreshComplete(boolean success) {
         mCurrentState = STATE_NULL;
         mHederView.setPadding(0, -mHeight, 0, 0);
         tvHeaderTittle.setText("下拉刷新");
         ivArrow.setVisibility(View.VISIBLE);
         pbLoading.setVisibility(View.INVISIBLE);
+
+        if (success) {
+            setCurrentTime();
+        }
     }
 
     private RefreshListener mListener;

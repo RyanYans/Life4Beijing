@@ -1,12 +1,9 @@
 package com.rya.life4beijing.view;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-
-import java.text.BreakIterator;
 
 /**
  * Created by Rya32 on 广东石油化工学院.

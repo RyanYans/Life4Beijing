@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.rya.life4beijing.R;
@@ -175,11 +176,41 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
                         StreamUtil.writeFileToCache(getmActivity(), tabDataStr, getmChildrenBean().getTitle());
                         // PrefUtil.setString(getmActivity(), ConstantsValue.TABNEWS_JSON, tabDataStr);
 
+                        //模拟网络延迟
+                        try {
+                            new Thread().sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        assert newsListView != null;
+                        getmActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getmActivity(), "iStream not null , 网络连接成功！", Toast.LENGTH_SHORT);
+
+                                newsListView.RefreshComplete(true);
+                            }
+                        });
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
                     Log.w(TAG, "run: Http Getting Error");
+                    try {
+                        new Thread().sleep(2000);
+
+                        getmActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                newsListView.RefreshComplete(false);
+                                Toast.makeText(getmActivity(), "iStream is null , 网络连接失败！", Toast.LENGTH_SHORT);
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();
@@ -244,21 +275,6 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
                 }
             });
         }
-
-        //模拟网络延迟
-        try {
-            new Thread().sleep(3500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        assert newsListView != null;
-        getmActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                newsListView.RefreshComplete();
-            }
-        });
 
     }
 
