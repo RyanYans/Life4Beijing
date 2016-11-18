@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -20,6 +19,7 @@ import com.rya.life4beijing.Utils.StreamUtil;
 import com.rya.life4beijing.base.BaseTabDetilPager;
 import com.rya.life4beijing.bean.NewsData;
 import com.rya.life4beijing.bean.NewsTabBean;
+import com.rya.life4beijing.view.DragRefreshHeaderView;
 import com.rya.life4beijing.view.TopNewsViewPager;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +31,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Optional;
 
 /**
  * 页面详情
@@ -49,7 +48,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
     @BindView(R.id.vp_detail)
     TopNewsViewPager vpDetail;
 
-    private ListView newsListView;
+    private DragRefreshHeaderView  newsListView;
 
     private TextView mTextView;
 
@@ -92,9 +91,17 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
         View view = View.inflate(getmActivity(), R.layout.pager_tab_detail, null);
         View dragView = View.inflate(getmActivity(), R.layout.header_dragview, null);
 
-        newsListView = (ListView) view.findViewById(R.id.lv_news);
+        newsListView = (DragRefreshHeaderView) view.findViewById(R.id.lv_news);
 
         newsListView.addHeaderView(listViewHeader);
+
+        newsListView.setOnRefreshListener(new DragRefreshHeaderView.RefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDataFromServer();
+
+            }
+        });
 
 //        vp_detail = (ViewPager)view.findViewById(R.id.vp_detail);
 
@@ -238,6 +245,21 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
             });
         }
 
+        //模拟网络延迟
+        try {
+            new Thread().sleep(3500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assert newsListView != null;
+        getmActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                newsListView.RefreshComplete();
+            }
+        });
+
     }
 
     private class TopNewsDetailAdapter extends PagerAdapter {
@@ -264,6 +286,9 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
             Picasso
                     .with(getmActivity())
                     .load(topImageUrl)
+                    .fit()
+                    .placeholder(R.drawable.topnews_item_default)
+                    .error(R.drawable.topnews_item_default)
                     .into(imageView);
 
             container.addView(imageView);
@@ -311,6 +336,8 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
             Picasso
                     .with(getmActivity())
                     .load(newsData.getListimage())
+                    .placeholder(R.drawable.news_pic_default)
+                    .error(R.drawable.news_pic_default)
                     .into(viewHolder.ivNewsImg);
 
             return convertView;

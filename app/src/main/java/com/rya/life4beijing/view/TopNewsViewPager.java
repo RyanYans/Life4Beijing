@@ -60,6 +60,8 @@ public class TopNewsViewPager extends ViewPager {
                             getParent().requestDisallowInterceptTouchEvent(false);
                         }
                     }
+                } else {
+                    getParent().requestDisallowInterceptTouchEvent(false);
                 }
                 break;
             case MotionEvent.ACTION_UP:
