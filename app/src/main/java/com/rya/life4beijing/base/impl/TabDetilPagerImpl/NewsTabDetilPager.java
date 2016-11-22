@@ -3,6 +3,7 @@ package com.rya.life4beijing.base.impl.TabDetilPagerImpl;
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ import butterknife.ButterKnife;
  * Version 1.0
  */
 
-public class NewsTabDetilPager extends BaseTabDetilPager {
+public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshHeaderView.RefreshListener {
 
     @BindView(R.id.tv_topnews_title)
     TextView topNewsTitle;
@@ -59,6 +60,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
     private List<NewsTabBean.DataBean.TopnewsBean> mTopNewsList;
     private TopNewsDetailAdapter mNewsDetailAdapter;
     private List<NewsTabBean.DataBean.NewsBean> mNewsList;
+    private String mMoreUri;
 
 
     public NewsTabDetilPager(Activity activity, NewsData.DataBean.ChildrenBean childrenBean) {
@@ -96,13 +98,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
 
         newsListView.addHeaderView(listViewHeader);
 
-        newsListView.setOnRefreshListener(new DragRefreshHeaderView.RefreshListener() {
-            @Override
-            public void onRefresh() {
-                getDataFromServer();
-
-            }
-        });
+        newsListView.setOnRefreshListener(this);
 
 //        vp_detail = (ViewPager)view.findViewById(R.id.vp_detail);
 
@@ -225,6 +221,14 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
 
         mTopNewsList = mTabData.getData().getTopnews();
 
+        String moreUri = mTabData.getData().getMore();
+        if (TextUtils.isEmpty(moreUri)) {
+            mMoreUri = ConstantsValue.BASE_URL + moreUri;
+        } else {
+            mMoreUri = null;
+        }
+
+
         // ViewPager
         if (vpDetail != null) {
             getmActivity().runOnUiThread(new Runnable() {
@@ -276,6 +280,56 @@ public class NewsTabDetilPager extends BaseTabDetilPager {
             });
         }
 
+    }
+
+    @Override
+    public void onRefresh() {
+        getDataFromServer();
+    }
+
+    @Override
+    public void onLoddingMore() {
+        if (mMoreUri != null) {
+            getMoreDataFromServer();
+        } else {
+            Toast.makeText(getmActivity(), "没有最新数据了..", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getMoreDataFromServer() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                InputStream iStream = HttpUtil.getData(mMoreUri);
+//                InputStreamReader iReader = new InputStreamReader(iStream);
+                if (iStream != null) {
+                    try {
+                        String tabDataStr = StreamUtil.streamToString(iStream);
+
+                        getDataFromJson(tabDataStr);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.w(TAG, "run: Http Getting Error");
+                    try {
+                        new Thread().sleep(2000);
+
+                        getmActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                newsListView.RefreshComplete(false);
+                                Toast.makeText(getmActivity(), "iStream is null , 网络连接失败！", Toast.LENGTH_SHORT);
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     private class TopNewsDetailAdapter extends PagerAdapter {

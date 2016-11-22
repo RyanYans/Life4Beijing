@@ -3,6 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorWaterBlue">#009999</color>
+    <color name="colorWaterBlueCenter">#99009999</color>
     <color name="primary_color">#c33</color>
     <color name="point_disable">#999</color>
     <color name="point_enable">#933</color>

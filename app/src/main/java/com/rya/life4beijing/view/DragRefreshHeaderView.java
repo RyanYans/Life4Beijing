@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -13,10 +14,8 @@ import android.widget.TextView;
 
 import com.rya.life4beijing.R;
 
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Formatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,12 +25,13 @@ import butterknife.ButterKnife;
  * Version 1.0
  */
 
-public class DragRefreshHeaderView extends ListView {
+public class DragRefreshHeaderView extends ListView implements AbsListView.OnScrollListener {
 
     private static final int STATE_NULL = 0;
     private static final int STATE_PULL_DOWN_REFRESH = 1;
     private static final int STATE_RELEASE_UP_REFRESH = 2;
     private static final int STATE_REFRESHING = 3;
+    private boolean IS_FOOTER_LODDING = false;
     @BindView(R.id.iv_arrow)
     ImageView ivArrow;
     @BindView(R.id.pb_loading)
@@ -49,6 +49,8 @@ public class DragRefreshHeaderView extends ListView {
     private RotateAnimation mPullDownRotateAnimation;
     private int mCurrentState;
     private RotateAnimation mReleaseUpRotateAnimation;
+    private int mFooterHeight;
+    private View mFooterView;
 
     public DragRefreshHeaderView(Context context) {
         this(context, null);
@@ -61,8 +63,21 @@ public class DragRefreshHeaderView extends ListView {
     public DragRefreshHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initHeaderView();
+        initFooterView();
 
         initAnimation();
+    }
+
+    private void initFooterView() {
+        mFooterView = View.inflate(getContext(), R.layout.footer_dragview, null);
+        this.addFooterView(mFooterView);
+
+        mFooterView.measure(0, 0);
+        mFooterHeight = mFooterView.getMeasuredHeight();
+
+        mFooterView.setPadding(0, -mFooterHeight, 0, 0);
+
+        this.setOnScrollListener(this);
     }
 
     private void initAnimation() {
@@ -91,7 +106,6 @@ public class DragRefreshHeaderView extends ListView {
         mHeight = mHederView.getMeasuredHeight();
 
         mHederView.setPadding(0, -mHeight, 0, 0);
-
     }
 
     @Override
@@ -205,8 +219,36 @@ public class DragRefreshHeaderView extends ListView {
         this.mListener = listener;
     }
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        if (scrollState == SCROLL_STATE_IDLE) {
+            int lastVisiblePosition = getLastVisiblePosition();
+            if (lastVisiblePosition == getCount() - 1) {
+                if (!IS_FOOTER_LODDING) {
+                    mFooterView.setPadding(0, 0, 0, 0);
+
+                    //自动跳到最后一条目录
+                    this.setSelection(getCount() - 1);
+
+                    //回掉方法给调用者 , 加载更多..
+                    mListener.onLoddingMore();
+
+                    IS_FOOTER_LODDING = true;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
     public interface RefreshListener {
         public void onRefresh();
+
+        public void onLoddingMore();
     }
 
 }
