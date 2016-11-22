@@ -202,11 +202,19 @@ public class DragRefreshHeaderView extends ListView implements AbsListView.OnScr
     }
 
     public void RefreshComplete(boolean success) {
-        mCurrentState = STATE_NULL;
-        mHederView.setPadding(0, -mHeight, 0, 0);
-        tvHeaderTittle.setText("下拉刷新");
-        ivArrow.setVisibility(View.VISIBLE);
-        pbLoading.setVisibility(View.INVISIBLE);
+        if (! IS_FOOTER_LODDING) {
+            mCurrentState = STATE_NULL;
+            mHederView.setPadding(0, -mHeight, 0, 0);
+            tvHeaderTittle.setText("下拉刷新");
+            ivArrow.setVisibility(View.VISIBLE);
+            pbLoading.setVisibility(View.INVISIBLE);
+        } else {
+            mFooterView.setPadding(0, -mFooterHeight, 0, 0);
+
+            IS_FOOTER_LODDING = false;
+        }
+
+
 
         if (success) {
             setCurrentTime();
@@ -231,10 +239,12 @@ public class DragRefreshHeaderView extends ListView implements AbsListView.OnScr
                     //自动跳到最后一条目录
                     this.setSelection(getCount() - 1);
 
-                    //回掉方法给调用者 , 加载更多..
-                    mListener.onLoddingMore();
-
                     IS_FOOTER_LODDING = true;
+
+                    //回掉方法给调用者 , 加载更多..
+                    if (mListener != null) {
+                        mListener.onLoddingMore();
+                    }
                 }
             }
         }

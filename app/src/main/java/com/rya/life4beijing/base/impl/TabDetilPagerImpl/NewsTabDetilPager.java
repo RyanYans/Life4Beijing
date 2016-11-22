@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 
 public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshHeaderView.RefreshListener {
 
+    private static final Boolean IS_MORE = true;
     @BindView(R.id.tv_topnews_title)
     TextView topNewsTitle;
     @BindView(R.id.ll_topnews_point)
@@ -50,7 +51,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
     @BindView(R.id.vp_detail)
     TopNewsViewPager vpDetail;
 
-    private DragRefreshHeaderView  newsListView;
+    private DragRefreshHeaderView mNewsListView;
 
     private TextView mTextView;
 
@@ -94,11 +95,11 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
         View view = View.inflate(getmActivity(), R.layout.pager_tab_detail, null);
         View dragView = View.inflate(getmActivity(), R.layout.header_dragview, null);
 
-        newsListView = (DragRefreshHeaderView) view.findViewById(R.id.lv_news);
+        mNewsListView = (DragRefreshHeaderView) view.findViewById(R.id.lv_news);
 
-        newsListView.addHeaderView(listViewHeader);
+        mNewsListView.addHeaderView(listViewHeader);
 
-        newsListView.setOnRefreshListener(this);
+        mNewsListView.setOnRefreshListener(this);
 
 //        vp_detail = (ViewPager)view.findViewById(R.id.vp_detail);
 
@@ -133,7 +134,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
         //查看是否有json文件缓存
         String cacheFileStr = getCacheFile(getmChildrenBean().getTitle());
         if (cacheFileStr != null) {
-            getDataFromJson(cacheFileStr);
+            getDataFromJson(cacheFileStr, false);
         }
 
         //从服务器获取新数据
@@ -167,7 +168,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                     try {
                         String tabDataStr = StreamUtil.streamToString(iStream);
 
-                        getDataFromJson(tabDataStr);
+                        getDataFromJson(tabDataStr, false);
 
                         StreamUtil.writeFileToCache(getmActivity(), tabDataStr, getmChildrenBean().getTitle());
                         // PrefUtil.setString(getmActivity(), ConstantsValue.TABNEWS_JSON, tabDataStr);
@@ -179,13 +180,13 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                             e.printStackTrace();
                         }
 
-                        assert newsListView != null;
+                        assert mNewsListView != null;
                         getmActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getmActivity(), "iStream not null , 网络连接成功！", Toast.LENGTH_SHORT);
+                                Toast.makeText(getmActivity(), "iStream not null , 网络连接成功！", Toast.LENGTH_SHORT).show();
 
-                                newsListView.RefreshComplete(true);
+                                mNewsListView.RefreshComplete(true);
                             }
                         });
 
@@ -200,7 +201,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                         getmActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                newsListView.RefreshComplete(false);
+                                mNewsListView.RefreshComplete(false);
                                 Toast.makeText(getmActivity(), "iStream is null , 网络连接失败！", Toast.LENGTH_SHORT);
                             }
                         });
@@ -212,23 +213,49 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
         }).start();
     }
 
-    private void getDataFromJson(String tabDataStr) {
+    private void getDataFromJson(String tabDataStr, boolean loddingMore) {
 
         Gson gson = new Gson();
         mTabData = gson.fromJson(tabDataStr, NewsTabBean.class);
 
-        mNewsList = mTabData.getData().getNews();
+        if (!loddingMore) {
+            mNewsList = mTabData.getData().getNews();
 
-        mTopNewsList = mTabData.getData().getTopnews();
+            mTopNewsList = mTabData.getData().getTopnews();
 
-        String moreUri = mTabData.getData().getMore();
-        if (TextUtils.isEmpty(moreUri)) {
-            mMoreUri = ConstantsValue.BASE_URL + moreUri;
-        } else {
-            mMoreUri = null;
+            String moreUri = mTabData.getData().getMore();
+            if (TextUtils.isEmpty(moreUri)) {
+                mMoreUri = ConstantsValue.BASE_URL + moreUri;
+                System.out.println("More Uri ............. !~ " + mMoreUri);
+            } else {
+                mMoreUri = null;
+                System.out.println("More Uri ............. Null!~");
+            }
+
+            initHeaderView();
+
+
+            // ListView
+            if (mNewsListView != null) {
+                getmActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mNewsListView.setAdapter(new NewsAdapter());
+                    }
+                });
+            }
+        } else { // 加载更多。。
+            List<NewsTabBean.DataBean.NewsBean> news = mTabData.getData().getNews();
+            mNewsList.addAll(news);
+
+            mNewsDetailAdapter.notifyDataSetChanged();
+
+            mNewsListView.RefreshComplete(true);
         }
 
+    }
 
+    private void initHeaderView() {
         // ViewPager
         if (vpDetail != null) {
             getmActivity().runOnUiThread(new Runnable() {
@@ -269,17 +296,6 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                 }
             });
         }
-
-        // ListView
-        if (newsListView != null) {
-            getmActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    newsListView.setAdapter(new NewsAdapter());
-                }
-            });
-        }
-
     }
 
     @Override
@@ -292,6 +308,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
         if (mMoreUri != null) {
             getMoreDataFromServer();
         } else {
+            mNewsListView.RefreshComplete(true);
             Toast.makeText(getmActivity(), "没有最新数据了..", Toast.LENGTH_SHORT).show();
         }
     }
@@ -307,7 +324,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                     try {
                         String tabDataStr = StreamUtil.streamToString(iStream);
 
-                        getDataFromJson(tabDataStr);
+                        getDataFromJson(tabDataStr, true);
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -320,7 +337,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                         getmActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                newsListView.RefreshComplete(false);
+                                mNewsListView.RefreshComplete(false);
                                 Toast.makeText(getmActivity(), "iStream is null , 网络连接失败！", Toast.LENGTH_SHORT);
                             }
                         });
