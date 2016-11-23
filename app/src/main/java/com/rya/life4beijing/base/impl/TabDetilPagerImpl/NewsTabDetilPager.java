@@ -175,7 +175,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
 
                         //模拟网络延迟
                         try {
-                            new Thread().sleep(2000);
+                            Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -196,7 +196,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                 } else {
                     Log.w(TAG, "run: Http Getting Error");
                     try {
-                        new Thread().sleep(2000);
+                        Thread.sleep(6500);
 
                         getmActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -223,17 +223,8 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
 
             mTopNewsList = mTabData.getData().getTopnews();
 
-            String moreUri = mTabData.getData().getMore();
-            if (TextUtils.isEmpty(moreUri)) {
-                mMoreUri = ConstantsValue.BASE_URL + moreUri;
-                System.out.println("More Uri ............. !~ " + mMoreUri);
-            } else {
-                mMoreUri = null;
-                System.out.println("More Uri ............. Null!~");
-            }
 
             initHeaderView();
-
 
             // ListView
             if (mNewsListView != null) {
@@ -244,15 +235,20 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                     }
                 });
             }
+
         } else { // 加载更多。。
             List<NewsTabBean.DataBean.NewsBean> news = mTabData.getData().getNews();
             mNewsList.addAll(news);
 
-            mNewsDetailAdapter.notifyDataSetChanged();
+            getmActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mNewsDetailAdapter.notifyDataSetChanged();
 
-            mNewsListView.RefreshComplete(true);
+                    mNewsListView.RefreshComplete(true);
+                }
+            });
         }
-
     }
 
     private void initHeaderView() {
@@ -305,7 +301,15 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
 
     @Override
     public void onLoddingMore() {
+        String moreUri = mTabData.getData().getMore();
+        if (! TextUtils.isEmpty(moreUri)) {
+            mMoreUri = ConstantsValue.BASE_URL + moreUri;
+        } else {
+            mMoreUri = null;
+        }
+
         if (mMoreUri != null) {
+            System.out.println(mMoreUri);
             getMoreDataFromServer();
         } else {
             mNewsListView.RefreshComplete(true);
@@ -317,6 +321,11 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
         new Thread(new Runnable() {
             @Override
             public void run() {
+                try {   // 模拟网络延时
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 InputStream iStream = HttpUtil.getData(mMoreUri);
 //                InputStreamReader iReader = new InputStreamReader(iStream);
@@ -332,13 +341,13 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                 } else {
                     Log.w(TAG, "run: Http Getting Error");
                     try {
-                        new Thread().sleep(2000);
+                        Thread.sleep(2000);
 
                         getmActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 mNewsListView.RefreshComplete(false);
-                                Toast.makeText(getmActivity(), "iStream is null , 网络连接失败！", Toast.LENGTH_SHORT);
+                                Toast.makeText(getmActivity(), "iStream is null , 网络连接失败！", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } catch (InterruptedException e) {
