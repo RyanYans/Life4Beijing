@@ -1,15 +1,18 @@
 package com.rya.life4beijing.base.impl.TabDetilPagerImpl;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import com.google.gson.Gson;
 import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.ConstantsValue;
 import com.rya.life4beijing.Utils.HttpUtil;
+import com.rya.life4beijing.Utils.PrefUtil;
 import com.rya.life4beijing.Utils.StreamUtil;
 import com.rya.life4beijing.base.BaseTabDetilPager;
 import com.rya.life4beijing.bean.NewsData;
@@ -29,6 +33,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,7 +47,7 @@ import butterknife.ButterKnife;
  * Version 1.0
  */
 
-public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshHeaderView.RefreshListener {
+public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshHeaderView.RefreshListener, AdapterView.OnItemClickListener {
 
     private static final Boolean IS_MORE = true;
     @BindView(R.id.tv_topnews_title)
@@ -62,7 +68,6 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
     private TopNewsDetailAdapter mNewsDetailAdapter;
     private List<NewsTabBean.DataBean.NewsBean> mNewsList;
     private String mMoreUri;
-
 
     public NewsTabDetilPager(Activity activity, NewsData.DataBean.ChildrenBean childrenBean) {
         super(activity, childrenBean);
@@ -100,6 +105,8 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
         mNewsListView.addHeaderView(listViewHeader);
 
         mNewsListView.setOnRefreshListener(this);
+
+        mNewsListView.setOnItemClickListener(this);
 
 //        vp_detail = (ViewPager)view.findViewById(R.id.vp_detail);
 
@@ -358,6 +365,27 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
         }).start();
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println("Position >>>> " + position);
+
+        //获取listView的头布局的个数
+        int headerViewsCount = mNewsListView.getHeaderViewsCount();
+        position = position - headerViewsCount;
+
+        int newsId = mNewsList.get(position).getId();
+        String read_id = PrefUtil.getString(getmActivity(), "read_ids", "");
+        List<String> read_ids = Arrays.asList(read_id.split(","));
+
+        if (! read_ids.contains(newsId)) {
+            PrefUtil.setString(getmActivity(), "read_ids", read_id + newsId + ",");
+
+            TextView tvNewsTitle = (TextView) view.findViewById(R.id.tv_news_title);
+            tvNewsTitle.setTextColor(Color.GRAY);
+        }
+
+    }
+
     private class TopNewsDetailAdapter extends PagerAdapter {
 
         public TopNewsDetailAdapter() {
@@ -435,6 +463,15 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                     .placeholder(R.drawable.news_pic_default)
                     .error(R.drawable.news_pic_default)
                     .into(viewHolder.ivNewsImg);
+
+            //获取当前条目id
+            int currentNewsId = mNewsList.get(position).getId();
+            // 检查Item是否已读
+            String read_ids = PrefUtil.getString(getmActivity(), "read_ids", "");
+            List<String> ids = Arrays.asList(read_ids.split(","));
+            if (ids.contains(currentNewsId + "")) {
+                viewHolder.tvNewsTitle.setTextColor(Color.GRAY);
+            }
 
             return convertView;
         }
