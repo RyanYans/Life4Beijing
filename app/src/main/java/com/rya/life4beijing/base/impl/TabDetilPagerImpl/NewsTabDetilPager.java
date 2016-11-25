@@ -1,6 +1,7 @@
 package com.rya.life4beijing.base.impl.TabDetilPagerImpl;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -22,6 +23,7 @@ import com.rya.life4beijing.Utils.ConstantsValue;
 import com.rya.life4beijing.Utils.HttpUtil;
 import com.rya.life4beijing.Utils.PrefUtil;
 import com.rya.life4beijing.Utils.StreamUtil;
+import com.rya.life4beijing.activity.NewsDetailActicity;
 import com.rya.life4beijing.base.BaseTabDetilPager;
 import com.rya.life4beijing.bean.NewsData;
 import com.rya.life4beijing.bean.NewsTabBean;
@@ -383,6 +385,10 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
             TextView tvNewsTitle = (TextView) view.findViewById(R.id.tv_news_title);
             tvNewsTitle.setTextColor(Color.GRAY);
         }
+
+        //页面跳转
+        Intent intent = new Intent(getmActivity(), NewsDetailActicity.class);
+        getmActivity().startActivity(intent);
 
     }
 

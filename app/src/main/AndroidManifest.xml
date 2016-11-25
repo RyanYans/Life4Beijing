@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".activity.MainActicity"/>
         <activity android:name=".activity.UserGuideActivity"/>
+        <activity android:name=".activity.NewsDetailActicity"/>
     </application>
 
 </manifest>
