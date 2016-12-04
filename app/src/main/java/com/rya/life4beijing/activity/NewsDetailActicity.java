@@ -2,8 +2,11 @@ package com.rya.life4beijing.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -23,7 +26,7 @@ import butterknife.ButterKnife;
  * Version 1.0
  */
 
-public class NewsDetailActicity extends Activity {
+public class NewsDetailActicity extends Activity implements View.OnClickListener{
     @BindView(R.id.img_back)
     ImageButton imgBack;
     @BindView(R.id.img_share)
@@ -49,7 +52,8 @@ public class NewsDetailActicity extends Activity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        webviewNewsDetial.loadUrl("http://www.itheima.com");
+        String web_url = getIntent().getStringExtra("web_url");
+        webviewNewsDetial.loadUrl(web_url);
 
         WebSettings settings = webviewNewsDetial.getSettings();
         settings.setBuiltInZoomControls(true);  // 设置缩放按钮
@@ -87,9 +91,83 @@ public class NewsDetailActicity extends Activity {
             }
         });
 
+        initListener();
+
+
+
+    }
+
+    private void initListener() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        imgTextsize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChooseDialog();
+            }
+        });
+
+        imgShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void showChooseDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("字体设置");
+        String[] items = {"超大号字体", "大号字体", "中号字体", "小号字体",};
+        builder.setSingleChoiceItems(items, 2, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setNegativeButton("取消", null);
+
+        builder.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webviewNewsDetial.canGoBack()) {
+            webviewNewsDetial.goBack();
+        } else {
+            finish();
+        }
     }
 
     private void initStatusBar() {
         StatusBarUtil.setColor(this, getResources().getColor(R.color.colorAppStyle), 25);
+    }
+
+    @Override
+    public void onClick(View v) {
+        finish();
+        switch (v.getId()) {
+            case R.id.img_back:
+                finish();
+                break;
+            case R.id.img_textsize:
+                System.out.println("Img_textSize click!~");
+                break;
+            case R.id.img_share:
+                System.out.println("Img_share click!~");
+                break;
+        }
     }
 }

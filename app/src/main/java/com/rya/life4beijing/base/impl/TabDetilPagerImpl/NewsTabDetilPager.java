@@ -388,6 +388,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
 
         //页面跳转
         Intent intent = new Intent(getmActivity(), NewsDetailActicity.class);
+        intent.putExtra("web_url", mTabData.getData().getNews().get(position).getUrl());
         getmActivity().startActivity(intent);
 
     }
