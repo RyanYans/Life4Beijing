@@ -11,15 +11,11 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         >
-
-
-
         <WebView
             android:id="@+id/webview_news_detial"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
-
         <ProgressBar
             android:id="@+id/pb_news_detail_lodding"
             android:layout_width="wrap_content"
@@ -27,10 +23,6 @@
             android:indeterminateDrawable="@drawable/refresh_ring_shape"
             android:visibility="invisible"
             android:layout_gravity="center"/>
-
     </FrameLayout>
-
-
-
 
 </LinearLayout>

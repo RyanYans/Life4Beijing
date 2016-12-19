@@ -2,7 +2,6 @@ package com.rya.life4beijing.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -37,6 +36,7 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
     WebView webviewNewsDetial;
     @BindView(R.id.pb_news_detail_lodding)
     ProgressBar pbNewsDetailLodding;
+    private int mTempWhich;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +46,12 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
 
         initStatusBar();
 
-
         initWebView();
     }
 
+    /*
+    * 初始化webView界面及其参数
+    * */
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         String web_url = getIntent().getStringExtra("web_url");
@@ -93,10 +95,11 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
 
         initListener();
 
-
-
     }
 
+    /*
+    * 设置字体及分享按钮的点击事件
+    * */
     private void initListener() {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,20 +123,46 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
         });
     }
 
+    /*
+    * 显示字体选择对话框
+    * */
     private void showChooseDialog() {
+        int which = 0;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("字体设置");
         String[] items = {"超大号字体", "大号字体", "中号字体", "小号字体",};
-        builder.setSingleChoiceItems(items, 2, new DialogInterface.OnClickListener() {
+
+        if (mTempWhich != 0) {
+            which = mTempWhich;
+        } else {
+            which = 2;
+        }
+        builder.setSingleChoiceItems(items, which,  new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                System.out.println("字体大小 : " + which);
+                mTempWhich = which;
             }
         });
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                WebSettings settings = webviewNewsDetial.getSettings();
 
+                switch (mTempWhich) {
+                    case 0:
+                        settings.setTextZoom(200);
+                        break;
+                    case 1:
+                        settings.setTextZoom(150);
+                        break;
+                    case 2:
+                        settings.setTextZoom(100);
+                        break;
+                    case 3:
+                        settings.setTextZoom(65);
+                        break;
+                }
             }
         });
 
@@ -142,6 +171,9 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
         builder.show();
     }
 
+    /*
+    * 自定义WebView内部的返回点击
+    * */
     @Override
     public void onBackPressed() {
         if (webviewNewsDetial.canGoBack()) {
@@ -151,6 +183,9 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
         }
     }
 
+    /*
+    * 初始化沉浸式状态栏
+    * */
     private void initStatusBar() {
         StatusBarUtil.setColor(this, getResources().getColor(R.color.colorAppStyle), 25);
     }

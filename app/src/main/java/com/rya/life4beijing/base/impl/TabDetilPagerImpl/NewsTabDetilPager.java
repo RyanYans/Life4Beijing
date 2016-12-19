@@ -367,6 +367,9 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
         }).start();
     }
 
+    /*
+    * 新闻条目 点击处理
+    * */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         System.out.println("Position >>>> " + position);
@@ -386,11 +389,10 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
             tvNewsTitle.setTextColor(Color.GRAY);
         }
 
-        //页面跳转
+        //  ------- 页面跳转 ---------
         Intent intent = new Intent(getmActivity(), NewsDetailActicity.class);
         intent.putExtra("web_url", mTabData.getData().getNews().get(position).getUrl());
         getmActivity().startActivity(intent);
-
     }
 
     private class TopNewsDetailAdapter extends PagerAdapter {
