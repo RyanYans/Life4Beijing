@@ -13,12 +13,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.rya.life4beijing.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.onekeyshare.OnekeyShareTheme;
 
 /**
  * Created by Rya32 on 广东石油化工学院.
@@ -36,13 +40,15 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
     WebView webviewNewsDetial;
     @BindView(R.id.pb_news_detail_lodding)
     ProgressBar pbNewsDetailLodding;
-    private int mTempWhich;
+    private int mTempWhich = 2; // 默认为中号字体
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
         ButterKnife.bind(this);
+
+        ShareSDK.initSDK(this);
 
         initStatusBar();
 
@@ -118,7 +124,8 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
         imgShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(getApplicationContext(), "Sharing...", Toast.LENGTH_SHORT).show();
+                showShare();
             }
         });
     }
@@ -127,17 +134,11 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
     * 显示字体选择对话框
     * */
     private void showChooseDialog() {
-        int which = 0;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("字体设置");
         String[] items = {"超大号字体", "大号字体", "中号字体", "小号字体",};
 
-        if (mTempWhich != 0) {
-            which = mTempWhich;
-        } else {
-            which = 2;
-        }
-        builder.setSingleChoiceItems(items, which,  new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(items, mTempWhich, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 System.out.println("字体大小 : " + which);
@@ -204,5 +205,35 @@ public class NewsDetailActicity extends Activity implements View.OnClickListener
                 System.out.println("Img_share click!~");
                 break;
         }
+    }
+
+    /*
+    * 显示分享对话框
+    * */
+    private void showShare() {
+        ShareSDK.initSDK(this);
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
+        oks.setTitle("标题");
+        // titleUrl是标题的网络链接，QQ和QQ空间等使用
+        oks.setTitleUrl("http://sharesdk.cn");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://sharesdk.cn");
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("我是测试评论文本");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite(getString(R.string.app_name));
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl("http://sharesdk.cn");
+
+        // 启动分享GUI
+        oks.show(this);
     }
 }

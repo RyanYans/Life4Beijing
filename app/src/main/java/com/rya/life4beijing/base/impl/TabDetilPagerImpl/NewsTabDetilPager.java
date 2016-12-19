@@ -3,6 +3,8 @@ package com.rya.life4beijing.base.impl.TabDetilPagerImpl;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -70,6 +72,8 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
     private TopNewsDetailAdapter mNewsDetailAdapter;
     private List<NewsTabBean.DataBean.NewsBean> mNewsList;
     private String mMoreUri;
+    private Handler mHandler;
+
 
     public NewsTabDetilPager(Activity activity, NewsData.DataBean.ChildrenBean childrenBean) {
         super(activity, childrenBean);
@@ -243,6 +247,26 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                         mNewsListView.setAdapter(new NewsAdapter());
                     }
                 });
+            }
+
+            if (mHandler == null) {
+                mHandler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        int currentItem = vpDetail.getCurrentItem();
+                        currentItem++;
+
+                        if (currentItem >= mTopNewsList.size()) {
+                            currentItem = 0;
+                        }
+
+                        vpDetail.setCurrentItem(currentItem);
+
+                        mHandler.sendEmptyMessageDelayed(0, 3000);
+                    }
+                };
+
+                mHandler.sendEmptyMessageDelayed(0, 3000);
             }
 
         } else { // 加载更多。。
