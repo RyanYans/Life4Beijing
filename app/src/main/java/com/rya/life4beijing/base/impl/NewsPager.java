@@ -5,9 +5,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.rya.life4beijing.R;
 import com.rya.life4beijing.activity.MainActicity;
 import com.rya.life4beijing.Fragment.LeftMenuFragment;
 import com.rya.life4beijing.Utils.ConstantsValue;
@@ -81,17 +84,25 @@ public class NewsPager extends BasePager {
         Activity mActivity = getmActivity();
         mDetilPagers.add(new NewsDetilPager(mActivity, mNewsData.getData().get(0).getChildren()));
         mDetilPagers.add(new FocusDetilPager(mActivity));
-        mDetilPagers.add(new PhotoDetilPager(mActivity));
+        mDetilPagers.add(new PhotoDetilPager(mActivity, getmRootView()));
         mDetilPagers.add(new InteractDetilPager(mActivity));
     }
 
-    // 把页面数据添加到页面布局pagerContent(-FragmentLayout)上
+    // 把页面数据添加到页面布局pagerContent( FragmentLayout)上
     public void setCurrentDetilPager(int position) {
         //清空PagerContent内容
         pagerContent.removeAllViews();
 
         // 获取页面对象 -拿取页面布局
         BaseMenuDetilPager pager = mDetilPagers.get(position);
+
+        if (pager instanceof PhotoDetilPager) {
+            ImageButton imagePhotos = (ImageButton) getmRootView().findViewById(R.id.imgPhotos);
+            imagePhotos.setVisibility(View.VISIBLE);
+        } else {
+            ImageButton imagePhotos = (ImageButton) getmRootView().findViewById(R.id.imgPhotos);
+            imagePhotos.setVisibility(View.GONE);
+        }
         //初始化数据
         pager.initData();
 

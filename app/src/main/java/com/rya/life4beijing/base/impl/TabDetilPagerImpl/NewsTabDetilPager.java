@@ -9,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -267,6 +268,24 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
                 };
 
                 mHandler.sendEmptyMessageDelayed(0, 3000);
+
+                vpDetail.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                mHandler.removeCallbacksAndMessages(null);
+                                break;
+                            case MotionEvent.ACTION_CANCEL:     // 事件被取消
+                                mHandler.sendEmptyMessageDelayed(0, 3000);
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                mHandler.sendEmptyMessageDelayed(0, 3000);
+                                break;
+                        }
+                        return false;
+                    }
+                });
             }
 
         } else { // 加载更多。。

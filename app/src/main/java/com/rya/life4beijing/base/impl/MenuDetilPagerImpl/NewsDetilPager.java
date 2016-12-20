@@ -141,7 +141,6 @@ public class NewsDetilPager extends BaseMenuDetilPager {
             pager.initData();
 
             return pager.getmRootView();
-
         }
 
         @Override
@@ -165,7 +164,7 @@ public class NewsDetilPager extends BaseMenuDetilPager {
     }
 
     /**
-     * 页面ViewPager适配器
+     * 页面ViewPager适配器（indicator器中包含）
      */
     private class NewsDetilAdapter extends PagerAdapter {
         @Override

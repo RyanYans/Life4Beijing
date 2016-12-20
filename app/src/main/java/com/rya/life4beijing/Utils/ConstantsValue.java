@@ -9,6 +9,7 @@ public class ConstantsValue {
     public static final String FIRST_INTER = "first_inter";
     public static final String BASE_URL = "http://192.168.0.34:8080/zhbj";
     public static final String NEWSPAGER_URI = BASE_URL + "/categories.json";
+    public static final String PHOTOS_URI = BASE_URL + "/photos/photos_1.json";
 
     public static final String LEFT_MENU = "left_menu";
     public static final String MAIN_CONTENT = "left_content";
