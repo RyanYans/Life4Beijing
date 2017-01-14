@@ -82,6 +82,9 @@ public class PhotoDetilPager extends BaseMenuDetilPager {
             public void run() {
                 try {
                     InputStream photosData = HttpUtil.getData(ConstantsValue.PHOTOS_URI);
+                    if (photosData == null) {
+                        return;
+                    }
                     String str_photosData = StreamUtil.streamToString(photosData);
                     StreamUtil.writeFileToCache(getmActivity(), str_photosData, "photos_data");
 
