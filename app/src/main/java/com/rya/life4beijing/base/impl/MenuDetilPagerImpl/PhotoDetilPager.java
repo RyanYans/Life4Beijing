@@ -1,7 +1,6 @@
 package com.rya.life4beijing.base.impl.MenuDetilPagerImpl;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,7 +15,7 @@ import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.ConstantsValue;
 import com.rya.life4beijing.Utils.HttpUtil;
 import com.rya.life4beijing.Utils.StreamUtil;
-import com.rya.life4beijing.base.BaseMenuDetilPager;
+import com.rya.life4beijing.base.BaseDetilPager;
 import com.rya.life4beijing.bean.PhotosBean;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
  * Version 1.0
  */
 
-public class PhotoDetilPager extends BaseMenuDetilPager {
+public class PhotoDetilPager extends BaseDetilPager {
     @BindView(R.id.lv_photo)
     ListView lvPhoto;
     @BindView(R.id.gv_photo)

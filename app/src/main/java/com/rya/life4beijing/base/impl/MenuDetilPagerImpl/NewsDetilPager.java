@@ -12,12 +12,11 @@ import android.widget.TextView;
 
 import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.DisplayUtil;
-import com.rya.life4beijing.base.BaseMenuDetilPager;
+import com.rya.life4beijing.base.BaseDetilPager;
 import com.rya.life4beijing.base.impl.TabDetilPagerImpl.NewsTabDetilPager;
 import com.rya.life4beijing.bean.NewsData;
 import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
-import com.shizhefei.view.indicator.ScrollIndicatorView;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
@@ -32,7 +31,7 @@ import butterknife.ButterKnife;
  * Version 1.0
  */
 
-public class NewsDetilPager extends BaseMenuDetilPager {
+public class NewsDetilPager extends BaseDetilPager {
 
     @BindView(R.id.newstab_indicator)
     Indicator newstabIndicator;

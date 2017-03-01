@@ -6,18 +6,17 @@ import android.os.Message;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.rya.life4beijing.R;
-import com.rya.life4beijing.activity.MainActicity;
 import com.rya.life4beijing.Fragment.LeftMenuFragment;
+import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.ConstantsValue;
 import com.rya.life4beijing.Utils.HttpUtil;
 import com.rya.life4beijing.Utils.PrefUtil;
 import com.rya.life4beijing.Utils.StreamUtil;
-import com.rya.life4beijing.base.BaseMenuDetilPager;
+import com.rya.life4beijing.activity.MainActicity;
+import com.rya.life4beijing.base.BaseDetilPager;
 import com.rya.life4beijing.base.BasePager;
 import com.rya.life4beijing.base.impl.MenuDetilPagerImpl.FocusDetilPager;
 import com.rya.life4beijing.base.impl.MenuDetilPagerImpl.InteractDetilPager;
@@ -39,7 +38,7 @@ import java.util.ArrayList;
 public class NewsPager extends BasePager {
 
     private static final int UPDATE_NEWSDATA = 200;
-    private ArrayList<BaseMenuDetilPager> mDetilPagers;
+    private ArrayList<BaseDetilPager> mDetilPagers;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -94,7 +93,7 @@ public class NewsPager extends BasePager {
         pagerContent.removeAllViews();
 
         // 获取页面对象 -拿取页面布局
-        BaseMenuDetilPager pager = mDetilPagers.get(position);
+        BaseDetilPager pager = mDetilPagers.get(position);
 
         if (pager instanceof PhotoDetilPager) {
             ImageButton imagePhotos = (ImageButton) getmRootView().findViewById(R.id.imgPhotos);
@@ -103,7 +102,7 @@ public class NewsPager extends BasePager {
             ImageButton imagePhotos = (ImageButton) getmRootView().findViewById(R.id.imgPhotos);
             imagePhotos.setVisibility(View.GONE);
         }
-        //初始化数据
+        //初始化数据 -- 多态
         pager.initData();
 
         View view = pager.getmRootView();

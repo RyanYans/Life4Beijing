@@ -8,7 +8,7 @@ import android.view.View;
  * Version 1.0
  */
 
-public abstract class BaseMenuDetilPager {
+public abstract class BaseDetilPager {
 
     private final Activity mActivity;
 
@@ -23,7 +23,7 @@ public abstract class BaseMenuDetilPager {
         return mRootView;
     }
 
-    protected BaseMenuDetilPager(Activity activity) {
+    protected BaseDetilPager(Activity activity) {
         mActivity = activity;
 
         mRootView = initView();

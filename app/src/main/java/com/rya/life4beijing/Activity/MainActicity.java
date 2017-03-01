@@ -60,7 +60,7 @@ public class MainActicity extends SlidingFragmentActivity{
         return leftFtagment;
     }
 
-    public MainContentFragment getNewsPager() {
+    public MainContentFragment getMainContentFragment() {
         FragmentManager fragmentManager = getFragmentManager();
         MainContentFragment mainContentFragment = (MainContentFragment)fragmentManager.findFragmentByTag(ConstantsValue.MAIN_CONTENT);
 

@@ -81,7 +81,7 @@ public class LeftMenuFragment extends BaseFragment {
     private void updatePager(int position) {
         MainActicity mActivity = (MainActicity) this.mActivity;
         // 获取主屏幕页面
-        MainContentFragment contentFragment = mActivity.getNewsPager();
+        MainContentFragment contentFragment = mActivity.getMainContentFragment();
         // 获取新闻中心页面
         NewsPager newsPager = contentFragment.getNewsPager();
 

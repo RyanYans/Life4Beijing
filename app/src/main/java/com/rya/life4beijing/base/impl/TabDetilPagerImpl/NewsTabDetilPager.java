@@ -73,7 +73,21 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
     private TopNewsDetailAdapter mNewsDetailAdapter;
     private List<NewsTabBean.DataBean.NewsBean> mNewsList;
     private String mMoreUri;
-    private Handler mHandler;
+    private  Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            int currentItem = vpDetail.getCurrentItem();
+            currentItem++;
+
+            if (currentItem >= mTopNewsList.size()) {
+                currentItem = 0;
+            }
+
+            vpDetail.setCurrentItem(currentItem);
+
+            mHandler.sendEmptyMessageDelayed(0, 3000);
+        }
+    };
 
 
     public NewsTabDetilPager(Activity activity, NewsData.DataBean.ChildrenBean childrenBean) {
