@@ -79,7 +79,7 @@ public class SplashActivity extends Activity {
                 boolean first_enter = PrefUtil.getBoolean(getApplicationContext(), ConstantsValue.FIRST_INTER, true);
                 if (first_enter) {
                     // 跳转到新手引导
-                    Intent intent = new Intent(getApplicationContext(), UserGuideActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), context.class);
                     startActivity(intent);
                 } else {
                     // 跳转到主页面

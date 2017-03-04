@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.ConstantsValue;
+import com.rya.life4beijing.Utils.DensityUtil;
 import com.rya.life4beijing.Utils.PrefUtil;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  * Created by Rya32 on 广东石油化工学院.
  * Version 1.0
  */
-public class UserGuideActivity extends Activity {
+public class context extends Activity {
 
     private ViewPager viewpager_guide;
     private Button btn_guide;
@@ -63,7 +64,7 @@ public class UserGuideActivity extends Activity {
             if (index == 0) {
                 pointView.setEnabled(true);
             }else {
-                pointLayoutParams.leftMargin = 10;
+                pointLayoutParams.leftMargin = DensityUtil.dip2px(10, this);
                 pointView.setEnabled(false);
             }
             pointView.setLayoutParams(pointLayoutParams);

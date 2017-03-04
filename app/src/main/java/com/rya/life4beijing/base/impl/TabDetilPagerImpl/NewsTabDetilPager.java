@@ -454,7 +454,7 @@ public class NewsTabDetilPager extends BaseTabDetilPager implements DragRefreshH
 
     private class TopNewsDetailAdapter extends PagerAdapter {
 
-        public TopNewsDetailAdapter() {
+        TopNewsDetailAdapter() {
 
         }
 

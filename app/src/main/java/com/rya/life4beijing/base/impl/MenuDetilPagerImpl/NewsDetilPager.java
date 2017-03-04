@@ -85,7 +85,7 @@ public class NewsDetilPager extends BaseDetilPager {
 
         // 初始化 IndicatorViewPager 顶部指示器 + 下方显示页面
         initIndicatorViewPager();
-    }
+}
 
     /**
      * 初始化 顶部指示器
@@ -136,7 +136,7 @@ public class NewsDetilPager extends BaseDetilPager {
         @Override
         public View getViewForPage(int position, View convertView, ViewGroup container) {
             NewsTabDetilPager pager = mNewsTabDetilList.get(position);
-            // 拿到 Pager对象先初始化数据
+            // 到 Pager对象先初始化数据拿
             pager.initData();
 
             return pager.getmRootView();

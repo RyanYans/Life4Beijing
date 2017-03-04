@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActicity"/>
-        <activity android:name=".activity.UserGuideActivity"/>
+        <activity android:name=".activity.context"/>
         <activity android:name=".activity.NewsDetailActicity"/>
         <activity
             android:name="com.mob.tools.MobUIShell"
