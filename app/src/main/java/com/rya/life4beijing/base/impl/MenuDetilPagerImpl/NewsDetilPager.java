@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.rya.life4beijing.Fragment.TestFragment;
 import com.rya.life4beijing.R;
 import com.rya.life4beijing.Utils.DisplayUtil;
 import com.rya.life4beijing.base.BaseDetilPager;
@@ -136,10 +137,19 @@ public class NewsDetilPager extends BaseDetilPager {
         @Override
         public View getViewForPage(int position, View convertView, ViewGroup container) {
             NewsTabDetilPager pager = mNewsTabDetilList.get(position);
+
+            TestFragment testFragment = new TestFragment();
+
             // 到 Pager对象先初始化数据拿
             pager.initData();
 
-            return pager.getmRootView();
+            View view = testFragment.getView();
+            if (view != null) {
+                return view;
+            } else {
+                return pager.getmRootView();
+            }
+
         }
 
         @Override

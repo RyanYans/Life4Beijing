@@ -1,11 +1,15 @@
 package com.rya.life4beijing.base.impl.MenuDetilPagerImpl;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.rya.life4beijing.Fragment.TestFragment;
 import com.rya.life4beijing.base.BaseDetilPager;
 
 /**
@@ -25,6 +29,13 @@ public class FocusDetilPager extends BaseDetilPager {
         textView.setTextColor(Color.RED);
         textView.setTextSize(24);
         textView.setGravity(Gravity.CENTER);
+
+        TestFragment testFragment = new TestFragment();
+        if (testFragment.getView() == null) {
+            Log.i("TAG__Erro!!", "initView: " + "Null Fragment!");
+        } else {
+            Log.i("TAG__Good!!", "initView: " + " not Null Fragment!");
+        }
 
         return textView;
     }
