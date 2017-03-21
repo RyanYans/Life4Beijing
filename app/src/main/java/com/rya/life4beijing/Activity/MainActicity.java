@@ -2,8 +2,10 @@ package com.rya.life4beijing.activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.WindowManager;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -39,7 +41,9 @@ public class MainActicity extends SlidingFragmentActivity{
         setBehindContentView(R.layout.left_menu);
         SlidingMenu slidingMenu = getSlidingMenu();
         slidingMenu.setTouchModeAbove(SlidingMenu.LEFT);
-        slidingMenu.setBehindOffset(500);
+
+        int widthPixels = getResources().getDisplayMetrics().widthPixels;
+        slidingMenu.setBehindOffset(widthPixels/2);
     }
 
     private void initView() {

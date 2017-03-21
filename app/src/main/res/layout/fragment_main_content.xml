@@ -16,7 +16,7 @@
         android:id="@+id/rg_botton"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="65dp"
         android:background="@drawable/bottom_tab_bg"
         android:gravity="center"
         android:orientation="horizontal"
